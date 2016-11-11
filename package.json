@@ -1,0 +1,30 @@
+{
+  "name": "dirble",
+  "version": "0.1.0",
+  "description": "NodeJS wrapper for the Dirble API (https://dirble.com/developer/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goibon/dirble.git"
+  },
+  "keywords": [
+    "dirble",
+    "api",
+    "radio"
+  ],
+  "author": "Kasper Lind Sørensen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goibon/dirble/issues"
+  },
+  "homepage": "https://github.com/goibon/dirble#readme",
+  "devDependencies": {
+    "standard": "^8.5.0"
+  },
+  "dependencies": {
+    "request": "^2.78.0"
+  }
+}

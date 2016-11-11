@@ -77,5 +77,30 @@ module.exports = function (apiKey) {
     })
   }
 
+  /*
+      Returns a radio station with the given id
+      @param {number} [id] Id of a radio station
+  */
+  dirble.getStation = function (id) {
+    return new Promise(function (resolve, reject) {
+      var query = `/station/${id}?${querystring.stringify({ token: apiKey })}`
+
+      if (!id || id < 0) {
+        reject('You must supply a valid id')
+      }
+
+      request(hostname + query, function (error, response, body) {
+        if (error) {
+          reject(error)
+        }
+        if (response.statusCode !== 200) {
+          reject(response.statusMessage)
+        }
+
+        resolve(body)
+      })
+    })
+  }
+
   return dirble
 }

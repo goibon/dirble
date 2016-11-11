@@ -15,9 +15,9 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getStations = function (page, perPage, offset) {
-    var query = '/stations?' + querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })
-
     return new Promise(function (resolve, reject) {
+      var query = `/stations?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
+
       request(hostname + query, function (error, response, body) {
         if (error) {
           reject(error)
@@ -38,9 +38,9 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getRecentlyAddedStations = function (page, perPage, offset) {
-    var query = '/stations/recent?' + querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })
-
     return new Promise(function (resolve, reject) {
+      var query = `/stations/recent?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
+
       request(hostname + query, function (error, response, body) {
         if (error) {
           reject(error)
@@ -61,9 +61,9 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getPopularStations = function (page, perPage, offset) {
-    var query = '/stations/popular?' + querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })
-
     return new Promise(function (resolve, reject) {
+      var query = `/stations/popular?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
+
       request(hostname + query, function (error, response, body) {
         if (error) {
           reject(error)

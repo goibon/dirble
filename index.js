@@ -54,5 +54,28 @@ module.exports = function (apiKey) {
     })
   }
 
+  /*
+      Returns a list of popular radio stations
+      @param {number} [page = 0] show which per_page stations to show
+      @param {number} [perPage = 20] How many stations per page to show
+      @param {number} [offset = 0]
+  */
+  dirble.getPopularStations = function (page, perPage, offset) {
+    var query = '/stations/popular?' + querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })
+
+    return new Promise(function (resolve, reject) {
+      request(hostname + query, function (error, response, body) {
+        if (error) {
+          reject(error)
+        }
+        if (response.statusCode !== 200) {
+          reject(response.statusMessage)
+        }
+
+        resolve(body)
+      })
+    })
+  }
+
   return dirble
 }

@@ -212,5 +212,36 @@ module.exports = function (apiKey) {
     })
   }
 
+  /*
+      Returns a list of all child categories for a given category
+      NOTE: Dirble does not seem to respect page, per_page or offset query parameters
+
+      @param {number} id The Id of a category
+      @param {number} [page = 0] show which per_page stations to show
+      @param {number} [perPage = 20] How many stations per page to show
+      @param {number} [offset = 0]
+  */
+  dirble.getChildCategories = function (id, page, perPage, offset) {
+    return new Promise(function (resolve, reject) {
+      var query = `/category/${id}/childs?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
+      console.log(hostname + query)
+
+      if (!id || id < 0) {
+        reject('You must supply a valid id')
+      }
+
+      request(hostname + query, function (error, response, body) {
+        if (error) {
+          reject(error)
+        }
+        if (response.statusCode !== 200) {
+          reject(response.statusMessage)
+        }
+
+        resolve(body)
+      })
+    })
+  }
+
   return dirble
 }

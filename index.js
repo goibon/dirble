@@ -152,5 +152,25 @@ module.exports = function (apiKey) {
     })
   }
 
+  /*
+      Returns a list of recently played songs from all stations
+  */
+  dirble.getSongHistory = function () {
+    return new Promise(function (resolve, reject) {
+      var query = `/songs?${querystring.stringify({ token: apiKey })}`
+
+      request(hostname + query, function (error, response, body) {
+        if (error) {
+          reject(error)
+        }
+        if (response.statusCode !== 200) {
+          reject(response.statusMessage)
+        }
+
+        resolve(body)
+      })
+    })
+  }
+
   return dirble
 }

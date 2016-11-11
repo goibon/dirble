@@ -102,5 +102,30 @@ module.exports = function (apiKey) {
     })
   }
 
+  /*
+      Returns a list of radio stations that are similar to the radio station with the given id
+      @param {number} [id] Id of a radio station
+  */
+  dirble.getSimilarStations = function (id) {
+    return new Promise(function (resolve, reject) {
+      var query = `/station/${id}/similar?${querystring.stringify({ token: apiKey })}`
+
+      if (!id || id < 0) {
+        reject('You must supply a valid id')
+      }
+
+      request(hostname + query, function (error, response, body) {
+        if (error) {
+          reject(error)
+        }
+        if (response.statusCode !== 200) {
+          reject(response.statusMessage)
+        }
+
+        resolve(body)
+      })
+    })
+  }
+
   return dirble
 }

@@ -183,5 +183,12 @@ module.exports = function (apiKey) {
     return makeRequest(`/search/${query}`)
   }
 
+  /*
+      Returns a list of all countries
+  */
+  dirble.getCountries = function () {
+    return makeRequest('/countries')
+  }
+
   return dirble
 }

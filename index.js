@@ -197,5 +197,18 @@ module.exports = function (apiKey) {
     return makeRequest('/continents')
   }
 
+  /*
+      Returns a list of countries for a given continent
+      @param {number} id The id of a continent
+  */
+  dirble.getCountriesInContinent = function (id) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
+        reject('You must supply a valid id')
+      })
+    }
+    return makeRequest(`/continents/${id}/countries`)
+  }
+
   return dirble
 }

@@ -6,6 +6,37 @@ module.exports = function (apiKey) {
   if (!apiKey) {
     throw new Error('You must supply an API key!')
   }
+
+  /*
+      Makes a request to the dirble api at the given path using the given parameters
+      @param {string} path The path the request will be sent to
+      @param {object} params Any query parameters that should be sent along with the request
+  */
+  function makeRequest (path, params) {
+    // The api key will always be sent as a query parameter
+    params = params || {}
+    params.token = apiKey
+
+    return new Promise(function (resolve, reject) {
+      request(`${hostname}${path}?${querystring.stringify(params)}`,
+        function (error, response, body) {
+          if (error) {
+            reject(error)
+          }
+          if (response.statusCode !== 200) {
+            try {
+              var result = JSON.parse(body)
+              reject(result.error)
+            } catch (error) {
+              reject(response.statusMessage)
+            }
+          }
+
+          resolve(body)
+        })
+    })
+  }
+
   var dirble = {}
 
   /*
@@ -15,20 +46,7 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getStations = function (page, perPage, offset) {
-    return new Promise(function (resolve, reject) {
-      var query = `/stations?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/stations', { page: page, per_page: perPage, offset: offset })
   }
 
   /*
@@ -38,20 +56,7 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getRecentlyAddedStations = function (page, perPage, offset) {
-    return new Promise(function (resolve, reject) {
-      var query = `/stations/recent?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/stations/recent', { page: page, per_page: perPage, offset: offset })
   }
 
   /*
@@ -61,20 +66,7 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getPopularStations = function (page, perPage, offset) {
-    return new Promise(function (resolve, reject) {
-      var query = `/stations/popular?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/stations/popular', { page: page, per_page: perPage, offset: offset })
   }
 
   /*
@@ -82,24 +74,12 @@ module.exports = function (apiKey) {
       @param {number} [id] Id of a radio station
   */
   dirble.getStation = function (id) {
-    return new Promise(function (resolve, reject) {
-      var query = `/station/${id}?${querystring.stringify({ token: apiKey })}`
-
-      if (!id || id < 0) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
         reject('You must supply a valid id')
-      }
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
       })
-    })
+    }
+    return makeRequest(`/station/${id}`)
   }
 
   /*
@@ -107,24 +87,12 @@ module.exports = function (apiKey) {
       @param {number} [id] Id of a radio station
   */
   dirble.getSimilarStations = function (id) {
-    return new Promise(function (resolve, reject) {
-      var query = `/station/${id}/similar?${querystring.stringify({ token: apiKey })}`
-
-      if (!id || id < 0) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
         reject('You must supply a valid id')
-      }
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
       })
-    })
+    }
+    return makeRequest(`/station/${id}/similar`)
   }
 
   /*
@@ -132,84 +100,33 @@ module.exports = function (apiKey) {
       @param {number} [id] Id of a radio station
   */
   dirble.getSongHistory = function (id) {
-    return new Promise(function (resolve, reject) {
-      var query = `/station/${id}/song_history?${querystring.stringify({ token: apiKey })}`
-
-      if (!id || id < 0) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
         reject('You must supply a valid id')
-      }
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
       })
-    })
+    }
+    return makeRequest(`/station/${id}/song_history`)
   }
 
   /*
       Returns a list of recently played songs from all stations
   */
   dirble.getSongHistory = function () {
-    return new Promise(function (resolve, reject) {
-      var query = `/songs?${querystring.stringify({ token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/songs')
   }
 
   /*
       Returns a list of all categories
   */
   dirble.getCategories = function () {
-    return new Promise(function (resolve, reject) {
-      var query = `/categories?${querystring.stringify({ token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/categories')
   }
 
   /*
       Returns a list of all primary categories
   */
   dirble.getPrimaryCategories = function () {
-    return new Promise(function (resolve, reject) {
-      var query = `/categories/primary?${querystring.stringify({ token: apiKey })}`
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
-      })
-    })
+    return makeRequest('/categories/primary')
   }
 
   /*
@@ -222,25 +139,12 @@ module.exports = function (apiKey) {
       @param {number} [offset = 0]
   */
   dirble.getChildCategories = function (id, page, perPage, offset) {
-    return new Promise(function (resolve, reject) {
-      var query = `/category/${id}/childs?${querystring.stringify({ page: page, per_page: perPage, offset: offset, token: apiKey })}`
-      console.log(hostname + query)
-
-      if (!id || id < 0) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
         reject('You must supply a valid id')
-      }
-
-      request(hostname + query, function (error, response, body) {
-        if (error) {
-          reject(error)
-        }
-        if (response.statusCode !== 200) {
-          reject(response.statusMessage)
-        }
-
-        resolve(body)
       })
-    })
+    }
+    return makeRequest(`/category/${id}/childs`, { page: page, per_page: perPage, offset: offset })
   }
 
   return dirble

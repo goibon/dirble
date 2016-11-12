@@ -190,5 +190,12 @@ module.exports = function (apiKey) {
     return makeRequest('/countries')
   }
 
+  /*
+      Returns a list of all continents
+  */
+  dirble.getContinents = function () {
+    return makeRequest('/continents')
+  }
+
   return dirble
 }

@@ -1,6 +1,6 @@
 {
   "name": "dirble",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "NodeJS wrapper for the Dirble API (https://dirble.com/developer/)",
   "main": "index.js",
   "scripts": {

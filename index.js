@@ -210,5 +210,21 @@ module.exports = function (apiKey) {
     return makeRequest(`/continents/${id}/countries`)
   }
 
+  /*
+      Returns a list of radio stations for a given country
+      @param {string} countryCode The code for a country, eg. 'US'
+      @param {number} [page = 0] show which per_page stations to show
+      @param {number} [perPage = 20] How many stations per page to show
+      @param {number} [offset = 0]
+  */
+  dirble.getStationsInCountry = function (countryCode, page, perPage, offset) {
+    if (!countryCode) {
+      return new Promise(function (resolve, reject) {
+        reject('You must supply a valid country code')
+      })
+    }
+    return makeRequest(`/countries/${countryCode}/stations`, { page: page, per_page: perPage, offset: offset })
+  }
+
   return dirble
 }

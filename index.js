@@ -154,5 +154,21 @@ module.exports = function (apiKey) {
     return makeRequest('/categories/tree')
   }
 
+  /*
+      Returns a list of radio stations for a given category
+      @param {number} id The id of a category
+      @param {number} [page = 0] show which per_page stations to show
+      @param {number} [perPage = 20] How many stations per page to show
+      @param {number} [offset = 0]
+  */
+  dirble.getStationsWithCategory = function (id, page, perPage, offset) {
+    if (!id || id < 0) {
+      return new Promise(function (resolve, reject) {
+        reject('You must supply a valid id')
+      })
+    }
+    return makeRequest(`/category/${id}/stations`, { page: page, per_page: perPage, offset: offset })
+  }
+
   return dirble
 }

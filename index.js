@@ -147,5 +147,12 @@ module.exports = function (apiKey) {
     return makeRequest(`/category/${id}/childs`, { page: page, per_page: perPage, offset: offset })
   }
 
+  /*
+      Returns all the categories as a tree structure
+  */
+  dirble.getCategoryTree = function () {
+    return makeRequest('/categories/tree')
+  }
+
   return dirble
 }

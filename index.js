@@ -170,5 +170,18 @@ module.exports = function (apiKey) {
     return makeRequest(`/category/${id}/stations`, { page: page, per_page: perPage, offset: offset })
   }
 
+  /*
+      Returns a list of radio stations based on a search query
+      @param {string} query A string to search for
+  */
+  dirble.search = function (query) {
+    if (!query) {
+      return new Promise(function (resolve, reject) {
+        reject('You must supply a valid query')
+      })
+    }
+    return makeRequest(`/search/${query}`)
+  }
+
   return dirble
 }

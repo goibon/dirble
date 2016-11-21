@@ -23,16 +23,15 @@ module.exports = function (apiKey) {
           if (error) {
             reject(error)
           }
-          if (response.statusCode !== 200) {
-            try {
-              var result = JSON.parse(body)
-              reject(result.error)
-            } catch (error) {
-              reject(response.statusMessage)
+          try {
+            var result = JSON.parse(body)
+            if (response.statusCode === 200) {
+              resolve(result)
             }
+            reject(result.error)
+          } catch (error) {
+            reject(response.statusMessage)
           }
-
-          resolve(body)
         })
     })
   }

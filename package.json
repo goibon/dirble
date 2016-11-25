@@ -4,6 +4,7 @@
   "description": "NodeJS wrapper for the Dirble API (https://dirble.com/developer/)",
   "main": "index.js",
   "scripts": {
+    "preversion": "npm test",
     "test": "standard"
   },
   "repository": {

@@ -3,8 +3,22 @@ const request = require('request')
 const hostname = 'http://api.dirble.com/v2'
 
 module.exports = function (apiKey) {
-  if (!apiKey) {
-    throw new Error('You must supply an API key!')
+  if (!isValidApiKey(apiKey)) {
+    return
+  }
+
+  /*
+      Attempts to validate the provided api key and throws an exception if it is invalid.
+      @param {string} the api key to validate
+  */
+  function isValidApiKey (apiKey) {
+    if (!(typeof apiKey === 'string')) {
+      throw new Error(`You must supply a valid API key as a string. Provided type: ${typeof apiKey}`)
+    }
+    if (!apiKey) {
+      throw new Error('You must supply a valid API key!')
+    }
+    return true
   }
 
   /*

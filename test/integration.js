@@ -1,4 +1,5 @@
 /* global describe, it */
+require('dotenv').load()
 const assert = require('assert')
 const API_KEY = process.env.DIRBLE_API_KEY
 const dirble = require('../index')(API_KEY)

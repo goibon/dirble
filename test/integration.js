@@ -28,7 +28,7 @@ describe('Calling', function () {
     it('offset = 1, returns stations from specified offset', function () {
       return dirble.getStations(defaultPageNumber, defaultPerPage).then(function (stations) {
         var expectedStation = stations[offset]
-        dirble.getStations(defaultPageNumber, defaultPerPage, offset).then(function (stations) {
+        return dirble.getStations(defaultPageNumber, defaultPerPage, offset).then(function (stations) {
           assert.deepStrictEqual(stations[0], expectedStation)
         })
       })
